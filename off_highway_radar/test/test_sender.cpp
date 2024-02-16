@@ -87,7 +87,7 @@ private:
   void spinSender(const std::chrono::nanoseconds & duration);
   void spinSubscriber(const std::chrono::nanoseconds & duration);
 
-  off_highway_radar::Sender::SharedPtr node_;
+  std::shared_ptr<off_highway_radar::Sender> node_;
 
   std::shared_ptr<VelocityPublisher> velocity_publisher_;
   std::shared_ptr<VelocitySubscriber> velocity_subscriber_;
@@ -110,6 +110,7 @@ void TestRadarSender::create_sender()
 
 void TestRadarSender::publish_velocity(double velocity, double yaw)
 {
+  auto msg_def = node_->get_messages();
   velocity_publisher_ = std::make_shared<VelocityPublisher>(velocity, yaw);
 
   spinSender(500ms);
@@ -117,9 +118,6 @@ void TestRadarSender::publish_velocity(double velocity, double yaw)
   // Generate and encode expected CAN values
   static const uint32_t velocity_id = 0x50;
   static const uint32_t yaw_id = 0x174;
-
-  off_highway_radar::Sender sender;
-  auto msg_def = sender.get_messages();
 
   // Set up expected velocity CAN message
   auto_static_cast(can_velocity_expected.id, velocity_id);

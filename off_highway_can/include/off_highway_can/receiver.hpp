@@ -121,9 +121,18 @@ protected:
    */
   virtual void process(std_msgs::msg::Header header, const FrameId & id, Message & message) = 0;
 
+  /**
+   * \brief Check if source address of received message matches configured J1939 source address.
+   *
+   * \param source_address Source address of received message
+   */
+  virtual bool is_j1939_source_address_matching(uint8_t source_address);
+
   /// Node TF frame id, needed in derived implementations for publishing with correct frame in
   /// header
   std::string node_frame_id_;
+  /// Use J1939 protocol, defaults to false if J1939 protocol handling is not implemented for sensor
+  bool use_j1939_{false};
 
 private:
   /**

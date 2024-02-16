@@ -46,10 +46,10 @@ A location data measurement may contain zero locations if the data measured flag
 number of contained locations are measured. In addition, only locations are contained in the drivers
 output which have the first bit of their measurement status set (measured and range check passed).
 
-Each cyclic input and output topic of the driver is monitored via ROS topic diagnostics, which
-checks its frequency and timestamp and publishes on `/diagnostics` the current status. As soon as
-the driver is not receiving UDP packets with the expected frequency (see UDP interface
-documentation) or not updated timestamps, the corresponding topic diagnostics will produce an error.
+Each cyclic output topic of the driver is monitored via ROS topic diagnostics, which checks its
+frequency and timestamp and publishes on `/diagnostics` the current status. As soon as the driver is
+not receiving UDP packets with the expected frequency (see UDP interface documentation) or not
+updated timestamps, the corresponding topic diagnostics will produce an error.
 
 In order that the driver can communicate to the sensor, one needs to configure the connection via
 the network parameters. The host IP, port and sensor IP, port need to be set to the settings
@@ -77,7 +77,7 @@ with custom converter classes. See [design](doc/design.md) for an overview.
   * Uses SI units, so yaw rate is in [rad/s], will be converted by driver into [deg/s] of UDP
     interface specification!
   * Is converted and sent to the sensor as UDP PDU.
-  * Topic diagnostics are only updated if all bytes of UDP PDU were sent.
+  * Logs error if not all bytes of UDP PDU were sent.
 
 #### Published topics
 

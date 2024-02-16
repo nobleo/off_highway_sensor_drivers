@@ -26,12 +26,11 @@ using namespace std::chrono_literals;
 class ObjectsPublisher : public rclcpp::Node
 {
 public:
-  ObjectsPublisher(off_highway_radar_msgs::msg::Objects test_objects, bool send_a, bool send_b)
+  ObjectsPublisher(
+    off_highway_radar_msgs::msg::Objects test_objects, bool send_a, bool send_b,
+    off_highway_can::Receiver::Messages & msg_def)
   : Node("off_highway_radar_objects_pub")
   {
-    off_highway_radar::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_object;
 
@@ -189,7 +188,7 @@ private:
   void spin_receiver(const std::chrono::nanoseconds & duration);
   void spin_subscriber(const std::chrono::nanoseconds & duration);
 
-  off_highway_radar::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_radar::Receiver> node_;
 
   std::shared_ptr<ObjectsPublisher> objects_publisher_;
   std::shared_ptr<ObjectsSubscriber> objects_subscriber_;
@@ -199,7 +198,8 @@ void TestRadarReceiver::publish_objects(
   off_highway_radar_msgs::msg::Objects objects, bool send_a,
   bool send_b)
 {
-  objects_publisher_ = std::make_shared<ObjectsPublisher>(objects, send_a, send_b);
+  auto msg_def = node_->get_messages();
+  objects_publisher_ = std::make_shared<ObjectsPublisher>(objects, send_a, send_b, msg_def);
   spin_receiver(100ms);
 }
 

@@ -28,12 +28,11 @@ static constexpr double kMetersToCentimeters = 0.01;
 class ObjectsPublisher : public rclcpp::Node
 {
 public:
-  explicit ObjectsPublisher(off_highway_uss_msgs::msg::Objects test_objects)
+  explicit ObjectsPublisher(
+    off_highway_uss_msgs::msg::Objects test_objects,
+    off_highway_can::Receiver::Messages & msg_def)
   : Node("off_highway_uss_objects_pub")
   {
-    off_highway_uss::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_object;
 
@@ -138,7 +137,7 @@ private:
   void spin_receiver(const std::chrono::nanoseconds & duration);
   void spin_subscriber(const std::chrono::nanoseconds & duration);
 
-  off_highway_uss::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_uss::Receiver> node_;
 
   std::shared_ptr<ObjectsPublisher> objects_publisher_;
   std::shared_ptr<ObjectsSubscriber> objects_subscriber_;
@@ -146,7 +145,8 @@ private:
 
 void TestUssReceiver::publish_objects(off_highway_uss_msgs::msg::Objects objects)
 {
-  objects_publisher_ = std::make_shared<ObjectsPublisher>(objects);
+  auto msg_def = node_->get_messages();
+  objects_publisher_ = std::make_shared<ObjectsPublisher>(objects, msg_def);
   spin_receiver(100ms);
 }
 

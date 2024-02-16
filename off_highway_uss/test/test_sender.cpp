@@ -83,7 +83,7 @@ private:
   void spin_subscriber(const std::chrono::nanoseconds & duration);
   static constexpr uint32_t temperature_id = 0xB500000;
 
-  off_highway_uss::Sender::SharedPtr node_;
+  std::shared_ptr<off_highway_uss::Sender> node_;
 
   std::shared_ptr<TemperaturePublisher> temperature_publisher_;
   std::shared_ptr<TemperatureSubscriber> temperature_subscriber_;
@@ -106,13 +106,10 @@ void TestUssSender::create_sender()
 
 void TestUssSender::publish_temperature(double temperature)
 {
+  auto msg_def = node_->get_messages();
   temperature_publisher_ = std::make_shared<TemperaturePublisher>(temperature);
 
   spin_sender(500ms);
-
-  // Generate and encode expected CAN values
-  off_highway_uss::Sender sender;
-  auto msg_def = sender.get_messages();
 
   // Set up expected temperature CAN message
   auto_static_cast(can_temperature_expected.id, temperature_id);

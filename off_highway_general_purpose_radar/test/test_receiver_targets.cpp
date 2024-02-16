@@ -37,13 +37,10 @@ class TargetsPublisher : public rclcpp::Node
 {
 public:
   TargetsPublisher(
-    off_highway_general_purpose_radar_msgs::msg::Targets test_targets, bool send_a,
-    bool send_b)
+    off_highway_general_purpose_radar_msgs::msg::Targets test_targets, bool send_a, bool send_b,
+    off_highway_can::Receiver::Messages & msg_def)
   : Node("off_highway_general_purpose_radar_targets_pub")
   {
-    off_highway_general_purpose_radar::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_target;
 
@@ -215,7 +212,7 @@ private:
   void spin_receiver(const std::chrono::nanoseconds & duration);
   void spin_subscriber(const std::chrono::nanoseconds & duration);
 
-  off_highway_general_purpose_radar::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_general_purpose_radar::Receiver> node_;
 
   std::shared_ptr<TargetsPublisher> targets_publisher_;
   std::shared_ptr<TargetsSubscriber> targets_subscriber_;
@@ -225,7 +222,8 @@ void TestRadarReceiver::publish_targets(
   off_highway_general_purpose_radar_msgs::msg::Targets targets, bool send_a,
   bool send_b)
 {
-  targets_publisher_ = std::make_shared<TargetsPublisher>(targets, send_a, send_b);
+  auto msg_def = node_->get_messages();
+  targets_publisher_ = std::make_shared<TargetsPublisher>(targets, send_a, send_b, msg_def);
   spin_receiver(100ms);
 }
 

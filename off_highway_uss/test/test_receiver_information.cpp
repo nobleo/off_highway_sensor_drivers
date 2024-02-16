@@ -25,12 +25,11 @@ using namespace std::chrono_literals;
 class InfoPublisher : public rclcpp::Node
 {
 public:
-  explicit InfoPublisher(off_highway_uss_msgs::msg::Information information)
+  explicit InfoPublisher(
+    off_highway_uss_msgs::msg::Information information,
+    off_highway_can::Receiver::Messages & msg_def)
   : Node("off_highway_uss_info_pub")
   {
-    off_highway_uss::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_info;
 
@@ -115,7 +114,7 @@ protected:
 private:
   void wait_some(const std::chrono::nanoseconds & duration);
 
-  off_highway_uss::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_uss::Receiver> node_;
 
   std::shared_ptr<InfoPublisher> info_publisher_;
   std::shared_ptr<InfoSubscriber> info_subscriber_;
@@ -123,7 +122,8 @@ private:
 
 void TestUssReceiver::publish_info(off_highway_uss_msgs::msg::Information information)
 {
-  info_publisher_ = std::make_shared<InfoPublisher>(information);
+  auto msg_def = node_->get_messages();
+  info_publisher_ = std::make_shared<InfoPublisher>(information, msg_def);
   wait_some(500ms);
 }
 

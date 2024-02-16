@@ -218,8 +218,6 @@ private:
   TopicDiagnosticSharedPtr diag_sensor_state_information_;
   TopicDiagnosticSharedPtr diag_sensor_broadcast_;
   TopicDiagnosticSharedPtr diag_location_attributes_;
-  // Input
-  TopicDiagnosticSharedPtr diag_ego_vehicle_data_;
 
   struct Limit
   {
@@ -233,7 +231,6 @@ private:
   Limit diag_frequencies_sensor_feedback_;
   Limit diag_frequencies_sensor_state_information_;
   Limit diag_frequencies_sensor_broadcast_;
-  Limit diag_frequencies_ego_vehicle_data_;
 };
 
 }  // namespace off_highway_premium_radar

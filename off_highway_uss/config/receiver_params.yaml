@@ -16,6 +16,17 @@ off_highway_uss_receiver:
 
     # TF frame id for all published messages of the receiver
     node_frame_id: base_link
-    # CAN frame id offset for functional frames
-    can_id_offset: 0x170
+
+    # Use J1939 protocol instead of automotive CAN
+    use_j1939: false
+
+    can:
+      # CAN frame id offset for functional frames
+      id_offset: 0x170
+
+    j1939:
+      # J1939 parameter group number (PGN)
+      pgn_offset: 0xFF70
+      # J1939 source address
+      source_address: 0x98
 

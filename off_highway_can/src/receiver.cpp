@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "j1939.hpp"
 #include "off_highway_can/receiver.hpp"
 
 #include "diagnostic_msgs/msg/diagnostic_status.hpp"
@@ -86,9 +87,16 @@ void Receiver::callback_can(const can_msgs::msg::Frame::SharedPtr frame)
   using std::chrono::duration;
   auto start = steady_clock::now();
 #endif
+  auto id = frame->id;
+  if (use_j1939_) {
+    if (!is_j1939_source_address_matching(get_j1939_source_address(frame->id))) {
+      return;
+    }
+    id = get_j1939_pgn(frame->id);
+  }
 
   // Check if received frame ID is from node
-  auto msg_it = messages_.find(frame->id);
+  auto msg_it = messages_.find(id);
   if (msg_it == messages_.end()) {
     RCLCPP_DEBUG(
       this->get_logger(), "Filtering of frame in %s took %f s", get_name(),
@@ -106,7 +114,7 @@ void Receiver::callback_can(const can_msgs::msg::Frame::SharedPtr frame)
 
   auto header = frame->header;
   header.frame_id = node_frame_id_;
-  process(header, frame->id, msg);
+  process(header, id, msg);
 
   RCLCPP_DEBUG(
     get_logger(), "Processing of frame in %s took %f s", get_name(),
@@ -116,6 +124,11 @@ void Receiver::callback_can(const can_msgs::msg::Frame::SharedPtr frame)
 Receiver::Messages Receiver::get_messages() const
 {
   return messages_;
+}
+
+bool Receiver::is_j1939_source_address_matching(uint8_t)
+{
+  return false;
 }
 
 void Receiver::add_diag_task(const std::shared_ptr<diagnostic_updater::DiagnosticTask> & task)

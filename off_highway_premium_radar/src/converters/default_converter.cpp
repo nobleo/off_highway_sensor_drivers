@@ -17,8 +17,6 @@
 // Needs to be in front of pcl includes for precompilation settings
 #include "off_highway_premium_radar/converters/pcl_radar_point_type.hpp"
 
-#include "pcl/common/projection_matrix.h"
-#include "pcl/conversions.h"
 #include "pcl_conversions/pcl_conversions.h"
 
 #include "ros_message_conversions.hpp"
@@ -30,8 +28,7 @@ DefaultConverter::DefaultConverter()
 : diag_frequencies_locations_{13., 17.},
   diag_frequencies_sensor_feedback_(18., 22.),
   diag_frequencies_sensor_state_information_{90., 110.},
-  diag_frequencies_sensor_broadcast_(0.5, 1.5),
-  diag_frequencies_ego_vehicle_data_(90., 110.)
+  diag_frequencies_sensor_broadcast_(0.5, 1.5)
 {
 }
 
@@ -100,13 +97,6 @@ void DefaultConverter::on_configure()
       node->create_subscription<off_highway_premium_radar_msgs::msg::EgoVehicleInput>(
       "~/ego_vehicle_data", 10,
       std::bind(&DefaultConverter::on_ego_vehicle_data, this, std::placeholders::_1));
-
-    diag_ego_vehicle_data_ = std::make_shared<diagnostic_updater::TopicDiagnostic>(
-      subscriber_ego_vehicle_input_->get_topic_name(), *diag_updater_,
-      FrequencyStatusParam(
-        &diag_frequencies_ego_vehicle_data_.min,
-        &diag_frequencies_ego_vehicle_data_.max),
-      TimeStampStatusParam(diag_timestamps_.min, diag_timestamps_.max));
   }
 
   if (synchronize_measurement_cycle_) {
@@ -202,9 +192,18 @@ void DefaultConverter::on_ego_vehicle_data(
   const off_highway_premium_radar_msgs::msg::EgoVehicleInput::SharedPtr msg)
 {
   // TODO(rcp1-beg) Check the x velocity range [-100, 100]?
-  auto d = from_msg(msg);
-  if (sender_->send_ego_vehicle_data(d)) {
-    diag_ego_vehicle_data_->tick(msg->header.stamp);
+  EgoVehicleInput d;
+  try {
+    d = from_msg(msg);
+  } catch (const std::out_of_range & e) {
+    RCLCPP_ERROR_STREAM(
+      logger_,
+      "Failed to convert ego vehicle data, will not be sent to sensor: " << e.what());
+    return;
+  }
+
+  if (!sender_->send_ego_vehicle_data(d)) {
+    RCLCPP_ERROR(logger_, "Failed to send all bytes of ego vehicle data to sensor.");
   }
 }
 

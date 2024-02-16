@@ -17,8 +17,6 @@
 #include <regex>
 #include <stdexcept>
 
-#include "pcl/common/projection_matrix.h"
-#include "pcl/conversions.h"
 #include "pcl_conversions/pcl_conversions.h"
 
 #include "diagnostic_msgs/msg/diagnostic_status.hpp"

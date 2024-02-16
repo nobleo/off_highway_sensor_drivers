@@ -15,6 +15,7 @@
 #pragma once
 
 #include <numbers>
+#include <cmath>
 #include <limits>
 #include <string>
 
@@ -98,7 +99,7 @@ auto to_msg(const EgoVehicleData & d)
   velocity.twist.linear.x = d.FeedBack_VehSpd;
   // Sensor uses deg/s
   velocity.twist.angular.z = d.FeedBack_RelYawRate * kDegToRad;
-  velocity.covariance[0] = d.FeedBack_VehSpdStdDev;
+  velocity.covariance[0] = d.FeedBack_VehSpdStdDev * d.FeedBack_VehSpdStdDev;
 
   geometry_msgs::msg::Accel acceleration;
   acceleration.linear.x = d.FeedBack_LogAcc;
@@ -306,11 +307,16 @@ auto to_msg(const SensorDTCInformation & d, const rclcpp::Time stamp, const std:
 inline
 auto from_msg(const msg::EgoVehicleInput::SharedPtr msg)
 {
+  const auto & x_velocity_variance = msg->vehicle_data.velocity.covariance[0];
+  if (x_velocity_variance < 0.0) {
+    throw std::out_of_range{"X velocity variance must be non-negative."};
+  }
+
   EgoVehicleInput d;
   d.vehicle_data.EgoData_VehSpd = msg->vehicle_data.velocity.twist.linear.x;
   // Sensor uses deg/s
   d.vehicle_data.EgoData_RelYawRate = msg->vehicle_data.velocity.twist.angular.z * kRadToDeg;
-  d.vehicle_data.EgoData_VehSpdStdDev = msg->vehicle_data.velocity.covariance[0];
+  d.vehicle_data.EgoData_VehSpdStdDev = std::sqrt(x_velocity_variance);
   d.vehicle_data.EgoData_LogAcc = msg->vehicle_data.acceleration.linear.x;
   return d;
 }

@@ -28,12 +28,11 @@ double range_scaling = 36.667 * kMetersToCentimeters;
 class RangePublisher : public rclcpp::Node
 {
 public:
-  explicit RangePublisher(off_highway_uss_msgs::msg::MaxDetectionRange range)
+  explicit RangePublisher(
+    off_highway_uss_msgs::msg::MaxDetectionRange range,
+    off_highway_can::Receiver::Messages & msg_def)
   : Node("off_highway_uss_range_pub")
   {
-    off_highway_uss::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_range;
 
@@ -122,7 +121,7 @@ protected:
 private:
   void wait_some(const std::chrono::nanoseconds & duration);
 
-  off_highway_uss::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_uss::Receiver> node_;
 
   std::shared_ptr<RangePublisher> range_publisher_;
   std::shared_ptr<RangeSubscriber> range_subscriber_;
@@ -130,7 +129,8 @@ private:
 
 void TestUssReceiver::publish_range(off_highway_uss_msgs::msg::MaxDetectionRange range)
 {
-  range_publisher_ = std::make_shared<RangePublisher>(range);
+  auto msg_def = node_->get_messages();
+  range_publisher_ = std::make_shared<RangePublisher>(range, msg_def);
   wait_some(500ms);
 }
 

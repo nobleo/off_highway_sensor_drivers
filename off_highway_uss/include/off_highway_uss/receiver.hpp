@@ -87,6 +87,13 @@ protected:
   void process(std_msgs::msg::Header header, const FrameId & id, Message & message) override;
 
   /**
+   * \brief Check if source address of received message matches configured J1939 source address.
+   *
+   * \param source_address Source address of received message
+   */
+  bool is_j1939_source_address_matching(uint8_t source_address) override;
+
+  /**
    * \brief Filter list and remove too old elements from list.
    */
   template<typename T>
@@ -178,6 +185,11 @@ protected:
   uint32_t direct_echo_base_id_;
   uint32_t info_id_;
   uint32_t max_detection_range_id_;
+
+  /// J1939 parameter group number (PGN)
+  uint32_t j1939_pgn_offset_;
+  /// J1939 source address
+  uint8_t j1939_source_address_;
 
   /// Allowed age of objects and echos
   double allowed_age_;

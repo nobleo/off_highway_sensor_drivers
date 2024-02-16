@@ -28,24 +28,26 @@ static constexpr double kMetersToCentimeters = 0.01;
 class EchosPublisher : public rclcpp::Node
 {
 public:
-  explicit EchosPublisher(off_highway_uss_msgs::msg::DirectEchos test_echos)
+  explicit EchosPublisher(
+    off_highway_uss_msgs::msg::DirectEchos test_echos,
+    off_highway_can::Receiver::Messages & msg_def, bool use_j1939)
   : Node("off_highway_uss_echos_pub")
   {
-    off_highway_uss::Receiver receiver;
-    auto msg_def = receiver.get_messages();
-
     // Initialize can msg
     can_msgs::msg::Frame can_msg_echo;
 
     // Initialize publisher
     publisher_ = this->create_publisher<can_msgs::msg::Frame>("from_can_bus", 1);
 
+
     // Publish echos
     for (off_highway_uss_msgs::msg::DirectEcho test_echo : test_echos.direct_echos) {
+      uint32_t direct_echo_id = (use_j1939 ? 0xff70 : 0x170) + test_echo.id;
+      uint32_t can_id = use_j1939 ? (0x18000098 + (direct_echo_id << 8)) : direct_echo_id;
       // Cast echo
-      auto_static_cast(can_msg_echo.id, 0x170 + test_echo.id);
+      auto_static_cast(can_msg_echo.id, can_id);
       auto_static_cast(can_msg_echo.header.stamp, now());
-      off_highway_can::Message & echo_msg = msg_def[can_msg_echo.id];
+      off_highway_can::Message & echo_msg = msg_def[direct_echo_id];
       auto_static_cast(echo_msg.signals["De1Distance"].value, test_echo.first.distance);
       auto_static_cast(echo_msg.signals["De2Distance"].value, test_echo.second.distance);
       auto_static_cast(
@@ -106,22 +108,24 @@ private:
 class TestUssReceiver : public ::testing::Test
 {
 protected:
-  void SetUp() override
+  void initialize_test(bool use_j1939)
   {
     // Overwrite allowed age to avoid timing issues in unit tests
     std::vector<rclcpp::Parameter> params = {
-      rclcpp::Parameter("allowed_age", 1.0)
+      rclcpp::Parameter("allowed_age", 1.0),
+      rclcpp::Parameter("use_j1939", use_j1939)
     };
     auto node_options = rclcpp::NodeOptions();
     node_options.parameter_overrides(params);
     node_ = std::make_shared<off_highway_uss::Receiver>("uss_receiver_test_node", node_options);
 
     ASSERT_EQ(node_->get_parameter("allowed_age").as_double(), 1.0);
+    ASSERT_EQ(node_->get_parameter("use_j1939").as_bool(), use_j1939);
 
     echos_subscriber_ = std::make_shared<EchosSubscriber>();
   }
 
-  void publish_echos(off_highway_uss_msgs::msg::DirectEchos echos);
+  void publish_echos(off_highway_uss_msgs::msg::DirectEchos echos, bool use_j1939);
   off_highway_uss_msgs::msg::DirectEchos get_echos();
   void verify_echos(
     off_highway_uss_msgs::msg::DirectEchos test_echos,
@@ -131,15 +135,16 @@ private:
   void spin_receiver(const std::chrono::nanoseconds & duration);
   void spin_subscriber(const std::chrono::nanoseconds & duration);
 
-  off_highway_uss::Receiver::SharedPtr node_;
+  std::shared_ptr<off_highway_uss::Receiver> node_;
 
   std::shared_ptr<EchosPublisher> echos_publisher_;
   std::shared_ptr<EchosSubscriber> echos_subscriber_;
 };
 
-void TestUssReceiver::publish_echos(off_highway_uss_msgs::msg::DirectEchos echos)
+void TestUssReceiver::publish_echos(off_highway_uss_msgs::msg::DirectEchos echos, bool use_j1939)
 {
-  echos_publisher_ = std::make_shared<EchosPublisher>(echos);
+  auto msg_def = node_->get_messages();
+  echos_publisher_ = std::make_shared<EchosPublisher>(echos, msg_def, use_j1939);
   spin_receiver(60ms);
 }
 
@@ -200,6 +205,7 @@ void TestUssReceiver::verify_echos(
 }
 
 TEST_F(TestUssReceiver, testEchosZero) {
+  static constexpr bool kUseJ1939 = false;
   off_highway_uss_msgs::msg::DirectEchos test_echos;
   off_highway_uss_msgs::msg::DirectEcho test_echo_0;
   // Set all values to 0
@@ -212,11 +218,13 @@ TEST_F(TestUssReceiver, testEchosZero) {
   test_echo_0.first_filtered.amplitude = 0;
   test_echos.direct_echos.push_back(test_echo_0);
 
-  publish_echos(test_echos);
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
   verify_echos(test_echos, get_echos());
 }
 
 TEST_F(TestUssReceiver, testEchosMin) {
+  static constexpr bool kUseJ1939 = false;
   off_highway_uss_msgs::msg::DirectEchos test_echos;
   off_highway_uss_msgs::msg::DirectEcho test_echo_min;
   // Set all values to min
@@ -229,11 +237,13 @@ TEST_F(TestUssReceiver, testEchosMin) {
   test_echo_min.first_filtered.amplitude = 0;
   test_echos.direct_echos.push_back(test_echo_min);
 
-  publish_echos(test_echos);
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
   verify_echos(test_echos, get_echos());
 }
 
 TEST_F(TestUssReceiver, testEchosMax) {
+  static constexpr bool kUseJ1939 = false;
   off_highway_uss_msgs::msg::DirectEchos test_echos;
   off_highway_uss_msgs::msg::DirectEcho test_echo_max;
   // Set all values to max
@@ -246,11 +256,13 @@ TEST_F(TestUssReceiver, testEchosMax) {
   test_echo_max.first_filtered.amplitude = 63;
   test_echos.direct_echos.push_back(test_echo_max);
 
-  publish_echos(test_echos);
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
   verify_echos(test_echos, get_echos());
 }
 
 TEST_F(TestUssReceiver, testEchosRand) {
+  static constexpr bool kUseJ1939 = false;
   off_highway_uss_msgs::msg::DirectEchos test_echos;
   off_highway_uss_msgs::msg::DirectEcho test_echo_rand;
   // Set all values to random
@@ -263,11 +275,13 @@ TEST_F(TestUssReceiver, testEchosRand) {
   test_echo_rand.first_filtered.amplitude = 11;
   test_echos.direct_echos.push_back(test_echo_rand);
 
-  publish_echos(test_echos);
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
   verify_echos(test_echos, get_echos());
 }
 
 TEST_F(TestUssReceiver, test12RandomValidEchos) {
+  static constexpr bool kUseJ1939 = false;
   off_highway_uss_msgs::msg::DirectEchos test_echos;
   // Create vector with unique IDs
   std::vector<uint8_t> ids(12);
@@ -290,7 +304,27 @@ TEST_F(TestUssReceiver, test12RandomValidEchos) {
     test_echos.direct_echos.push_back(test_echo);
   }
 
-  publish_echos(test_echos);
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
+  verify_echos(test_echos, get_echos());
+}
+
+TEST_F(TestUssReceiver, testEchosJ1939) {
+  static constexpr bool kUseJ1939 = true;
+  off_highway_uss_msgs::msg::DirectEchos test_echos;
+  off_highway_uss_msgs::msg::DirectEcho test_echo_j1939;
+  // Set all values to random
+  test_echo_j1939.id = 5;
+  test_echo_j1939.first.distance = 555;
+  test_echo_j1939.second.distance = 222;
+  test_echo_j1939.first_filtered.distance = 111;
+  test_echo_j1939.first.amplitude = 33;
+  test_echo_j1939.second.amplitude = 22;
+  test_echo_j1939.first_filtered.amplitude = 11;
+  test_echos.direct_echos.push_back(test_echo_j1939);
+
+  initialize_test(kUseJ1939);
+  publish_echos(test_echos, kUseJ1939);
   verify_echos(test_echos, get_echos());
 }
 

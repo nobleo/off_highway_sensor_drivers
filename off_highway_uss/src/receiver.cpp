@@ -17,8 +17,6 @@
 
 #include <regex>
 
-#include "pcl/common/projection_matrix.h"
-#include "pcl/conversions.h"
 #include "pcl_conversions/pcl_conversions.h"
 
 #include "diagnostic_msgs/msg/diagnostic_status.hpp"
@@ -256,6 +254,11 @@ void Receiver::process(std_msgs::msg::Header header, const FrameId & id, Message
   }
 }
 
+bool Receiver::is_j1939_source_address_matching(uint8_t source_address)
+{
+  return source_address == j1939_source_address_;
+}
+
 bool Receiver::filter(const Object & object)
 {
   return object.object_type == Object::TYPE_NONE;
@@ -399,12 +402,26 @@ void Receiver::declare_and_get_parameters()
   declare_parameter<double>("publish_frequency", 25.0, param_desc);
   publish_frequency_ = get_parameter("publish_frequency").as_double();
 
+  param_desc.description = "Use J1939 protocol instead of automotive CAN";
+  declare_parameter<bool>("use_j1939", false, param_desc);
+  use_j1939_ = get_parameter("use_j1939").as_bool();
+
   param_desc.description = "CAN frame id offset for functional frames";
-  declare_parameter<int>("can_id_offset", 0x170, param_desc);
-  can_id_offset_ = get_parameter("can_id_offset").as_int();
-  direct_echo_base_id_ = can_id_offset_ + kDirectEchoBaseIdOffset;
-  info_id_ = can_id_offset_ + kInfoIdOffset;
-  max_detection_range_id_ = can_id_offset_ + kMaxDetectionRangeIdOffset;
-  object_base_id_ = can_id_offset_ + kObjectBaseIdOffset;
+  declare_parameter<int>("can.id_offset", 0x170, param_desc);
+  can_id_offset_ = get_parameter("can.id_offset").as_int();
+
+  param_desc.description = "J1939 parameter group number (PGN)";
+  declare_parameter<int>("j1939.pgn_offset", 0xFF70, param_desc);
+  j1939_pgn_offset_ = get_parameter("j1939.pgn_offset").as_int();
+
+  param_desc.description = "J1939 source address";
+  declare_parameter<int>("j1939.source_address", 0x98, param_desc);
+  j1939_source_address_ = get_parameter("j1939.source_address").as_int();
+
+  auto offset = use_j1939_ ? j1939_pgn_offset_ : can_id_offset_;
+  direct_echo_base_id_ = offset + kDirectEchoBaseIdOffset;
+  info_id_ = offset + kInfoIdOffset;
+  max_detection_range_id_ = offset + kMaxDetectionRangeIdOffset;
+  object_base_id_ = offset + kObjectBaseIdOffset;
 }
 }  // namespace off_highway_uss

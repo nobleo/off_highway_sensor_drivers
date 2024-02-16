@@ -25,18 +25,30 @@ Contact: [**off-highway.beg@bosch.com**](mailto:off-highway.beg@bosch.com?subjec
 
 ### Receiver
 
-The USS receiver decodes CAN frames into an object list and an direct echo list, manages the current
+The USS receiver decodes CAN frames into an object list and a direct echo list, manages the current
 lists and publishes them cyclically.
+
+The parameter `use_j1939` defines whether automotive CAN or J1939 messages are expected. J1939
+support has the following limitations:
+
+* A fixed source address for the USS ECU must be configured. The dynamic assignment of source
+  addresses is not supported.
+* The receiver expects the parameter group numbers (PGNs) to be arranged as in the default DBC. A
+  rearrangement is only supported as a shift of the entire block. Moving individual PGNs is not
+  supported. Be aware that the PGN is only bit 8 to 23 of the extended CAN ID.
 
 All received messages are checked for their cyclic redundancy check (CRC), rolling message counter
 and age (message not older than parameter `allowed_age`). If any of these checks do not succeed the
 received message is not further processed and skipped.
 
 The relevant USS CAN frame IDs to process (`object_base_id`, `direct_echo_base_id`,
-`max_detection_range_id` and `info_id`) are calculated from the `can_id_offset` parameter with
-constant offsets. It should correspond to the value configured in the USS ECU and needs to be
-adapted for the specific bus setup. If multiple USS systems need to be decoded on the same bus just
-launch multiple receiver nodes with individual `can_id_offset` parameters.
+`max_detection_range_id` and `info_id`) are calculated from the `id_offset` (automotive CAN) or
+`pgn_offset` (J1939) parameter with constant offsets. It should correspond to the value configured
+in the USS ECU and needs to be adapted for the specific bus setup. When using J1939, the receiver
+also checks whether the source address contained in the message matches the value of the
+`source_address` parameter. If multiple USS systems need to be decoded on the same bus just launch
+multiple receiver nodes with individual `id_offset` (automotive CAN) or `pgn_offset` and
+`source_address` (J1939) parameters.
 
 The object data is published as a list of objects or as a point cloud and contains up to 20 objects
 (sensor limit). Only valid objects in the list are published (type not `TYPE_NONE`). Line objects in

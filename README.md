@@ -41,6 +41,13 @@ these drivers is capable of processing your system's specific CAN load.
 
 For further information, have a look at the linked package readmes.
 
+## Miscellaneous
+
+- [**off_highway_sensor_drivers_examples**](off_highway_sensor_drivers_examples/README.md): Sample
+  launch files and scripts to assist with further processing of sensor data.
+
+For further information, have a look at the linked package readme.
+
 ### Architecture
 
 The most relevant packages for an application of the CAN communication based sensors are the
