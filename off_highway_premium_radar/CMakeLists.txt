@@ -10,6 +10,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Werror -Wdeprecated)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wno-gnu-anonymous-struct -Wno-nested-anon-types)
+endif()
+
 # Dependencies
 find_package(ament_cmake REQUIRED)
 find_package(asio_cmake_module REQUIRED)
