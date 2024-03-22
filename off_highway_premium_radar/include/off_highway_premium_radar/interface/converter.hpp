@@ -36,6 +36,11 @@ public:
   using SharedPtr = std::shared_ptr<Converter>;
 
   /**
+   * \brief Destructor
+   */
+  virtual ~Converter() = default;
+
+  /**
    * \brief Configure converter with parent node and sender interface
    */
   virtual void configure(rclcpp::Node::WeakPtr parent, Sender::SharedPtr sender)

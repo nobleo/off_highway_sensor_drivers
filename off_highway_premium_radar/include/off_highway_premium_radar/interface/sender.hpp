@@ -28,6 +28,12 @@ class Sender
 {
 public:
   using SharedPtr = std::shared_ptr<Sender>;
+
+  /**
+   * \brief Destructor
+   */
+  virtual ~Sender() = default;
+
   /**
    * \brief Send ego vehicle data
    *

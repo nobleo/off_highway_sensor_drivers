@@ -28,6 +28,12 @@ class Receiver
 {
 public:
   using SharedPtr = std::shared_ptr<Receiver>;
+
+  /**
+   * \brief Destructor
+   */
+  virtual ~Receiver() = default;
+
   /**
    * \brief Called from receiving thread on receiving a full location data measurement
    *

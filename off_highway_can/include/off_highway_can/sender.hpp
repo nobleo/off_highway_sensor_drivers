@@ -53,7 +53,7 @@ public:
   /**
    * \brief Destroy the Sender object.
    */
-  ~Sender() = default;
+  virtual ~Sender() = default;
 
   /**
    * \brief Encode messages into CAN frames and send them.

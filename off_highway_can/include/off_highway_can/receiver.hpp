@@ -58,7 +58,7 @@ public:
   /**
    * \brief Destroy the Receiver object.
    */
-  ~Receiver() = default;
+  virtual ~Receiver() = default;
 
   /**
    * \brief Initialize object (2nd step) by filling message definitions.
