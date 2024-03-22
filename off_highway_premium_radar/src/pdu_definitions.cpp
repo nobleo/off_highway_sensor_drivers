@@ -26,7 +26,6 @@ namespace off_highway_premium_radar
 void LocData_Header_i::betoh()
 {
   LocData_LgpVer_i = be32toh(LocData_LgpVer_i);
-  LocData_BlockCounter_i = LocData_BlockCounter_i;
   LocData_TimeSts_i = be32toh(LocData_TimeSts_i);
   LocData_TimeStns_i = be32toh(LocData_TimeStns_i);
   LocData_NumLoc = be16toh(LocData_NumLoc);
@@ -316,7 +315,6 @@ void LocAtr_MountingPosition::betoh()
   LocAtr_SenPosZ = be32tohf(LocAtr_SenPosZ);
   LocAtr_SenPosAzi = be32tohf(LocAtr_SenPosAzi);
   LocAtr_SenPosEle = be32tohf(LocAtr_SenPosEle);
-  LocAtr_SenOrient = LocAtr_SenOrient;
 }
 
 LocationAttributes::LocationAttributes(const std::array<uint8_t, kPduSize> & buffer)
