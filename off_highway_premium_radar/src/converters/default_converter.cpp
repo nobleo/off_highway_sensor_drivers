@@ -26,9 +26,9 @@ namespace off_highway_premium_radar
 
 DefaultConverter::DefaultConverter()
 : diag_frequencies_locations_{13., 17.},
-  diag_frequencies_sensor_feedback_(18., 22.),
+  diag_frequencies_sensor_feedback_{18., 22.},
   diag_frequencies_sensor_state_information_{90., 110.},
-  diag_frequencies_sensor_broadcast_(0.5, 1.5)
+  diag_frequencies_sensor_broadcast_{0.5, 1.5}
 {
 }
 
