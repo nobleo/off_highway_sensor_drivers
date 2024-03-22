@@ -48,8 +48,7 @@ UdpSocket::UdpSocket(
   const uint16_t remote_port,
   const std::string & host_ip,
   const uint16_t host_port)
-: ctx_(ctx),
-  udp_socket_(ctx.ios())
+: udp_socket_(ctx.ios())
 {
   remote_endpoint_ = remote_ip.empty() ?
     udp::endpoint{udp::v4(), remote_port} :

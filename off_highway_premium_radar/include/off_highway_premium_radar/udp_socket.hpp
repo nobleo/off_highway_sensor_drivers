@@ -125,8 +125,6 @@ private:
     std::size_t bytes_transferred);
 
 private:
-  //! Threading context
-  const IoContext & ctx_;
   //! Actual UDP socket (ASIO wrapper around BSD socket)
   udp::socket udp_socket_;
   //! For sending packets
