@@ -124,7 +124,7 @@ void DefaultConverter::on_configure()
 void DefaultConverter::on_location_data(const LocationData & data)
 {
   RCLCPP_INFO_ONCE(logger_, "Sensor is sending data.");
-  RCLCPP_DEBUG_STREAM(logger_, "Received " << (int)data.locations.size() << " locations.");
+  RCLCPP_DEBUG_STREAM(logger_, "Received " << data.locations.size() << " locations.");
 
   auto stamp = decide_on_stamp(data.header.LocData_TimeSts_i, data.header.LocData_TimeStns_i);
 
