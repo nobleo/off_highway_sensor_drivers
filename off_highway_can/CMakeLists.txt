@@ -10,6 +10,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wdeprecated)
 endif()
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-ffp-contract=fast)
+endif()
+
 option(COMPILE_DEBUG_LOG "Compile ROS debug logging output" OFF)
 
 if(NOT ${COMPILE_DEBUG_LOG})
