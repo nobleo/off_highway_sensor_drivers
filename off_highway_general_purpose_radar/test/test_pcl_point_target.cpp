@@ -14,9 +14,9 @@
 
 #include "gtest/gtest.h"
 
-#include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "pcl_ros/impl/transforms.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 #include "off_highway_general_purpose_radar/pcl_point_target.hpp"
 

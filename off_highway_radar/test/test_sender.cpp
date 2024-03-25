@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include "gtest/gtest.h"
+#include "rclcpp/rclcpp.hpp"
 
 #include "off_highway_radar/sender.hpp"
 #include "off_highway_can/helper.hpp"

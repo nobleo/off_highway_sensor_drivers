@@ -16,6 +16,7 @@
 #include <stdexcept>
 
 #include "gtest/gtest.h"
+#include "rclcpp/rclcpp.hpp"
 
 #include "off_highway_general_purpose_radar/receiver.hpp"
 #include "off_highway_can/helper.hpp"

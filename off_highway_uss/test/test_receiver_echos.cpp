@@ -15,7 +15,7 @@
 #include <random>
 
 #include "gtest/gtest.h"
-#include "rclcpp/executors.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 #include "test_helper.hpp"
 #include "off_highway_uss/receiver.hpp"
