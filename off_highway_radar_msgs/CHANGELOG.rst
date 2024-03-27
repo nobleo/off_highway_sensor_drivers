@@ -2,5 +2,5 @@
 Changelog for package off_highway_radar_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2024-03-27)
+------------------

@@ -2,8 +2,8 @@
 Changelog for package off_highway_general_purpose_radar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2024-03-27)
+------------------
 * Include what you use
 * Disable irrelevant warnings for Clang
   Anonymous structs are used in PCL for type punning:

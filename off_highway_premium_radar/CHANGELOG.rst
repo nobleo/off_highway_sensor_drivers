@@ -2,8 +2,8 @@
 Changelog for package off_highway_premium_radar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2024-03-27)
+------------------
 * Disable irrelevant warnings for Clang
   Anonymous structs are used in PCL for type punning:
   https://github.com/PointCloudLibrary/pcl/issues/2303

@@ -2,8 +2,8 @@
 Changelog for package off_highway_uss
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.5.1 (2024-03-27)
+------------------
 * Include what you use
 * Remove unused variable
 * Properly include rclcpp/executors.hpp when using spin_some
