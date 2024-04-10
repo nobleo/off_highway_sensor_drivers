@@ -58,9 +58,7 @@ public:
   /**
    * \brief Construct a new Receiver object.
    */
-  explicit Receiver(
-    const std::string & node_name = "receiver",
-    const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+  explicit Receiver(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
 
   /**
    * \brief Destroy the Receiver object.

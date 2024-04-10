@@ -98,7 +98,7 @@ void TestUssSender::create_sender()
   };
   auto node_options = rclcpp::NodeOptions();
   node_options.parameter_overrides(params);
-  node_ = std::make_shared<off_highway_uss::Sender>("uss_sender_test_node", node_options);
+  node_ = std::make_shared<off_highway_uss::Sender>(node_options);
 
   ASSERT_EQ(node_->get_parameter("allowed_age").as_double(), 1.0);
 

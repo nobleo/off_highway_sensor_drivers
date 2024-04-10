@@ -29,10 +29,8 @@
 namespace off_highway_uss
 {
 
-Receiver::Receiver(
-  const std::string & node_name,
-  const rclcpp::NodeOptions & options)
-: off_highway_can::Receiver(node_name, options)
+Receiver::Receiver(const rclcpp::NodeOptions & options)
+: off_highway_can::Receiver("receiver", options)
 {
   declare_and_get_parameters();
 
@@ -425,3 +423,6 @@ void Receiver::declare_and_get_parameters()
   object_base_id_ = offset + kObjectBaseIdOffset;
 }
 }  // namespace off_highway_uss
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(off_highway_uss::Receiver)

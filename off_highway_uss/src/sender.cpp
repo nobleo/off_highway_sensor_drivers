@@ -17,10 +17,8 @@
 
 namespace off_highway_uss
 {
-Sender::Sender(
-  const std::string & node_name,
-  const rclcpp::NodeOptions & options)
-: off_highway_can::Sender(node_name, options)
+Sender::Sender(const rclcpp::NodeOptions & options)
+: off_highway_can::Sender("sender", options)
 {
   declare_and_get_parameters();
 
@@ -73,3 +71,6 @@ void Sender::declare_and_get_parameters()
   outside_temperature_id_ = get_parameter("outside_temperature_id").as_int();
 }
 }  // namespace off_highway_uss
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(off_highway_uss::Sender)
