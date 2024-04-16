@@ -124,5 +124,11 @@ See [sender_params.yaml](config/sender_params.yaml).
 
 ## Launch files
 
-* **[receiver.launch](launch/receiver.launch)**: Starts the receiver with the default parameters
-* **[sender.launch](launch/sender.launch)**: Starts the sender with the default parameters
+* **[receiver_launch](launch/receiver_launch.py)**: Starts the receiver with the given parameters.
+  * Arguments:
+    * **params**: Path to ROS YAML parameter file to load for receiver. If not provided, default
+      parameters from this package are loaded.
+* **[sender_launch](launch/sender_launch.py)**: Starts the sender with the given parameters.
+  * Arguments:
+    * **params**: Path to ROS YAML parameter file to load for sender. If not provided, default
+      parameters from this package are loaded.

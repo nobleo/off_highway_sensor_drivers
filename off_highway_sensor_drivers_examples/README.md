@@ -30,12 +30,12 @@ colcon build --cmake-args '-DCMAKE_BUILD_TYPE=Release'
 to build it. Source the workspace before running the example with
 
 ```bash
-ros2 launch off_highway_sensor_drivers_examples off_highway_premium_radar_filter.launch.py
+ros2 launch off_highway_sensor_drivers_examples off_highway_premium_radar_filter_launch.py
 ```
 
 ### Launch files
 
-* **[off_highway_premium_radar_filter.launch.py](launch/off_highway_premium_radar_filter.launch.py)**:
+* **[off_highway_premium_radar_filter_launch.py](launch/off_highway_premium_radar_filter_launch.py)**:
   Starts the off_highway_premium_radar driver with the given parameters, PCL PassThrough filters and
   rviz.
   * Arguments:

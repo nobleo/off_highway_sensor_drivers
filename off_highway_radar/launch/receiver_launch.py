@@ -13,24 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import ament_index_python.packages
-import launch
-import launch_ros.actions
-import pathlib
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    off_highway_uss = ament_index_python.packages.\
-        get_package_share_directory('off_highway_uss')
-    uss_params = pathlib.Path(off_highway_uss, 'config', 'receiver_params.yaml')
+    params = PathJoinSubstitution([
+        FindPackageShare('off_highway_radar'),
+        'config',
+        'receiver_params.yaml'
+    ])
 
-    return launch.LaunchDescription([
-        launch_ros.actions.Node(
-            package='off_highway_uss',
+    return LaunchDescription([
+        DeclareLaunchArgument('params',
+                              default_value=params,
+                              description='Parameters for receiver'),
+        Node(
+            package='off_highway_radar',
             executable='receiver',
-            name='off_highway_uss_receiver',
+            name='off_highway_radar_receiver',
             output='screen',
-            parameters=[uss_params],
+            parameters=[LaunchConfiguration('params')],
             arguments=[]
         )
     ])
