@@ -87,7 +87,6 @@ with custom converter classes. See [design](doc/design.md) for an overview.
   * Contains location measurement of radar as point cloud. Fields (all float for PCL filter
     compatibility, mapped Technical Customer Information signal name is specified in brackets):
     * **x, y, z**: Position of location
-    * **normal_x, normal_y, normal_z**: Radial velocity as vector in radial direction towards point
     * **radial_distance** (*LocData_RadDist_i_j*): Radial distance
     * **radial_velocity** (*LocData_RadRelVel_i_j*): Radial relative velocity
     * **azimuth_angle** (*LocData_AziAng_i_j*): Azimuth angle

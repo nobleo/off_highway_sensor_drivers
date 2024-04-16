@@ -36,7 +36,6 @@ namespace off_highway_premium_radar
 struct EIGEN_ALIGN16 PclPointLocation
 {
   PCL_ADD_POINT4D;
-  PCL_ADD_NORMAL4D;
   float radial_distance{0.};
   float radial_velocity{0.};
   float azimuth_angle{0.};
@@ -67,9 +66,6 @@ struct EIGEN_ALIGN16 PclPointLocation
     x = l.LocData_RadDist_i_j * cos(theta) * cos(phi);
     y = l.LocData_RadDist_i_j * sin(theta) * cos(phi);
     z = l.LocData_RadDist_i_j * sin(phi);
-    normal_x = l.LocData_RadRelVel_i_j * x / l.LocData_RadDist_i_j;
-    normal_y = l.LocData_RadRelVel_i_j * y / l.LocData_RadDist_i_j;
-    normal_z = l.LocData_RadRelVel_i_j * z / l.LocData_RadDist_i_j;
     radial_distance = l.LocData_RadDist_i_j;
     radial_velocity = l.LocData_RadRelVel_i_j;
     azimuth_angle = theta;
@@ -97,9 +93,6 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(off_highway_premium_radar::PclPointLocation,
                                   (float, x, x)
                                   (float, y, y)
                                   (float, z, z)
-                                  (float, normal_x, normal_x)
-                                  (float, normal_y, normal_y)
-                                  (float, normal_z, normal_z)
                                   (float, radial_distance, radial_distance)
                                   (float, radial_velocity, radial_velocity)
                                   (float, azimuth_angle, azimuth_angle)
