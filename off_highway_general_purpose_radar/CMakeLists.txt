@@ -16,6 +16,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(can_msgs REQUIRED)
 find_package(off_highway_can REQUIRED)
@@ -26,6 +27,7 @@ find_package(PCL REQUIRED COMPONENTS common)
 
 set(dependencies
   rclcpp
+  rclcpp_components
   sensor_msgs
   can_msgs
   off_highway_can
@@ -34,7 +36,6 @@ set(dependencies
   pcl_ros
   PCL
 )
-
 
 # Library to be used in unit tests
 add_library(${PROJECT_NAME} SHARED
@@ -64,16 +65,10 @@ ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(${dependencies})
 
 # Receiver
-add_executable(receiver
-  src/receiver_node.cpp
+rclcpp_components_register_node(${PROJECT_NAME}
+  PLUGIN "off_highway_general_purpose_radar::Receiver"
+  EXECUTABLE receiver
 )
-
-target_include_directories(receiver PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-ament_target_dependencies(receiver SYSTEM ${dependencies})
-target_link_libraries(receiver ${PROJECT_NAME})
 
 install(TARGETS receiver
   DESTINATION lib/${PROJECT_NAME}

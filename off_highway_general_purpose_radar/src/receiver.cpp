@@ -28,10 +28,8 @@
 namespace off_highway_general_purpose_radar
 {
 
-Receiver::Receiver(
-  const std::string & node_name,
-  const rclcpp::NodeOptions & options)
-: off_highway_can::Receiver(node_name, options)
+Receiver::Receiver(const rclcpp::NodeOptions & options)
+: off_highway_can::Receiver("receiver", options)
 {
   declare_and_get_parameters();
 

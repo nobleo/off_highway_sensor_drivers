@@ -102,8 +102,7 @@ protected:
     };
     auto node_options = rclcpp::NodeOptions();
     node_options.parameter_overrides(params);
-    node_ = std::make_shared<off_highway_general_purpose_radar::Receiver>(
-      "radar_receiver_test_node", node_options);
+    node_ = std::make_shared<off_highway_general_purpose_radar::Receiver>(node_options);
 
     ASSERT_EQ(node_->get_parameter("allowed_age").as_double(), 1.0);
 
