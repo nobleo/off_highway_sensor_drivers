@@ -20,6 +20,7 @@ find_package(asio_cmake_module REQUIRED)
 find_package(ASIO REQUIRED)
 find_package(io_context REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 # For default converter
 find_package(diagnostic_updater REQUIRED)
 find_package(off_highway_premium_radar_msgs REQUIRED)
@@ -38,6 +39,7 @@ set(dependencies
   pcl_conversions
   PCL
   rclcpp
+  rclcpp_components
   sensor_msgs
   std_msgs
   tf2
@@ -79,23 +81,9 @@ ament_export_targets(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_export_dependencies(${dependencies})
 
 # Executable
-add_executable(${PROJECT_NAME}_driver
-  src/main.cpp
-)
-
-target_link_libraries(${PROJECT_NAME}_driver ${PROJECT_NAME})
-
-ament_target_dependencies(${PROJECT_NAME}_driver SYSTEM ${dependencies})
-
-target_include_directories(
-  ${PROJECT_NAME}_driver PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
-
-install(
-  TARGETS ${PROJECT_NAME}_driver
-  DESTINATION lib/${PROJECT_NAME}
+rclcpp_components_register_node(${PROJECT_NAME}
+  PLUGIN "off_highway_premium_radar::NodeWithDefaultConverter"
+  EXECUTABLE driver
 )
 
 # Resources

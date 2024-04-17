@@ -13,45 +13,12 @@
 // limitations under the License.
 
 #include "off_highway_premium_radar/node.hpp"
-
-#include <functional>
+#include "off_highway_premium_radar/converters/default_converter.hpp"
 
 namespace off_highway_premium_radar
 {
-
-Node::Node(
-  const std::string & node_name,
-  const rclcpp::NodeOptions & options)
-: rclcpp::Node(node_name, options)
-{
-}
-
-void Node::configure(Converters converters)
-{
-  declare_and_get_parameters();
-
-  // Setup driver
-  driver_ =
-    std::make_shared<Driver>(host_ip_, host_port_, sensor_ip_, sensor_port_, connect_socket_);
-
-  for (auto & converter : converters) {
-    converter->configure(shared_from_this(), driver_);
-  }
-
-  for (auto & converter : converters) {
-    driver_->register_receiver(converter);
-  }
-
-  driver_->start_receiving();
-}
-
-void Node::declare_and_get_parameters()
-{
-  host_ip_ = declare_parameter("host_ip", host_ip_);
-  host_port_ = declare_parameter("host_port", host_port_);
-  sensor_ip_ = declare_parameter("sensor_ip", sensor_ip_);
-  sensor_port_ = declare_parameter("sensor_port", sensor_port_);
-  connect_socket_ = declare_parameter("connect_socket", connect_socket_);
-}
-
+typedef Node<off_highway_premium_radar::DefaultConverter> NodeWithDefaultConverter;
 }  // namespace off_highway_premium_radar
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(off_highway_premium_radar::NodeWithDefaultConverter)

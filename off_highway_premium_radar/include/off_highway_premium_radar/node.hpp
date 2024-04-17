@@ -17,7 +17,8 @@
 #include <cstdint>
 #include <memory>
 #include <string>
-#include <vector>
+#include <tuple>
+#include <variant>
 
 #include "rclcpp/rclcpp.hpp"
 #include "io_context/io_context.hpp"
@@ -35,26 +36,19 @@ namespace off_highway_premium_radar
  * driver.
  *
  */
+template<typename ... Converters>
 class Node : public rclcpp::Node
 {
 public:
-  using Converters = std::vector<Converter::SharedPtr>;
-
   /**
    * \brief Construct a new Node object
-   *
-   * \param node_name Name of node
    */
-  explicit Node(
-    const std::string & node_name,
-    const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+  explicit Node(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
 
   /**
    * \brief Create driver, configure converters, register receivers and start receiving
-   *
-   * \param converters List of converters to connect to driver
    */
-  void configure(Converters converters);
+  void configure();
 
 private:
   /**
@@ -64,6 +58,10 @@ private:
 
   //! Driver to send data to sensor and register receivers to process incoming data
   std::shared_ptr<Driver> driver_;
+  //! Storage of data converters
+  std::tuple<std::variant<std::shared_ptr<Converters>>...> converters_;
+  //! Timer for two-stage initialization due to shared_from_this usage
+  rclcpp::TimerBase::SharedPtr configure_timer_;
 
   // Parameters
   //! Host IP, empty to use all interfaces
@@ -80,3 +78,5 @@ private:
 };
 
 }  // namespace off_highway_premium_radar
+
+#include "off_highway_premium_radar/impl/node_impl.hpp"

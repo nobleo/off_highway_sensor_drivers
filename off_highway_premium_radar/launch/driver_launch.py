@@ -30,7 +30,7 @@ def generate_launch_description():
                               description='Parameters for driver'),
         Node(
             package='off_highway_premium_radar',
-            executable='off_highway_premium_radar_driver',
+            executable='driver',
             output='screen',
             emulate_tty=True,
             parameters=[LaunchConfiguration('params')]

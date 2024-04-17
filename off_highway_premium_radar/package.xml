@@ -15,6 +15,7 @@
   <depend>asio</depend>
   <depend>io_context</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
 
   <!-- For default converter -->
   <depend>diagnostic_updater</depend>
