@@ -1,3 +1,6 @@
+# Comments provide naming from Technical Customer Information
+
+# MeasPgm_ID
 uint16 DMP00 = 0
 uint16 DMP01 = 1
 uint16 DMP02 = 2

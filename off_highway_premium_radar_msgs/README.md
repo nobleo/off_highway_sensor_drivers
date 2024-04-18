@@ -4,7 +4,8 @@ This package provides the ROS messages for the off_highway_premium_radar package
 interface of the premium radar to ROS messages.
 
 The naming of messages and fields is aligned to the UDP interface description but updated (e.g.,
-written verbosely) to adhere ROS naming conventions.
+written verbosely) to adhere ROS naming conventions. All mapped fields contain a comment with the
+original name of the UDP signal from the **Technical Customer Information**.
 
 ## Messages
 

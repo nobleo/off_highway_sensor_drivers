@@ -1,3 +1,6 @@
+# Comments provide naming from Technical Customer Information
+
+# SenModReq_RadMod
 uint8 MODE_START_MODULATION = 1
 uint8 MODE_STOP_MODULATION = 2
 uint8 radar_mode
