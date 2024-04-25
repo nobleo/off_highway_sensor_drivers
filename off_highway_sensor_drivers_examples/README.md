@@ -6,7 +6,7 @@ with further processing of the data provided by the off_highway_sensor_drivers.
 ## off_highway_premium_radar_filter
 
 Series-connected Point Cloud Library (PCL) PassThrough filter nodes, which filter the point cloud
-returned by the off_highway_premium_radar driver by the z, x and radar_cross_section field values of
+returned by the off_highway_premium_radar_sample driver by the z, x and radar_cross_section field values of
 the locations. Thresholds are set to example values directly in the launch file and can be adapted
 at runtime using the dynamic reconfigure plugin of rqt.
 
@@ -36,11 +36,11 @@ ros2 launch off_highway_sensor_drivers_examples off_highway_premium_radar_filter
 ### Launch files
 
 * **[off_highway_premium_radar_filter_launch.py](launch/off_highway_premium_radar_filter_launch.py)**:
-  Starts the off_highway_premium_radar driver with the given parameters, PCL PassThrough filters and
+  Starts the off_highway_premium_radar_sample driver with the given parameters, PCL PassThrough filters and
   rviz.
   * Arguments:
     * **off_highway_premium_radar_params**: Path to ROS YAML parameter file to load for driver. If
-      not provided, default parameters from the off_highway_premium_radar package are loaded.
+      not provided, default parameters from the off_highway_premium_radar_sample package are loaded.
     * **rviz_config**: Path to rviz configuration file. If not provided, default configuration is
       loaded from this package.
 
