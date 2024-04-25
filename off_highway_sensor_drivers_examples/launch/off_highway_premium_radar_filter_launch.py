@@ -39,7 +39,8 @@ def generate_launch_description():
                               description='rviz configuration file'),
         Node(
             package='off_highway_premium_radar',
-            executable='off_highway_premium_radar_driver',
+            executable='driver',
+            name='off_highway_premium_radar_driver',
             output='screen',
             emulate_tty=True,
             parameters=[LaunchConfiguration('off_highway_premium_radar_params')]
