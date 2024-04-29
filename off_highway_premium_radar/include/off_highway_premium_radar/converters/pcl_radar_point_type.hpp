@@ -62,9 +62,11 @@ struct EIGEN_ALIGN16 PclPointLocation
   {
     const float & phi = l.LocData_EleAng_i_j;
     const float & theta = l.LocData_AziAng_i_j;
+    float cos_phi = cos(phi);
+    float sin_theta = sin(theta);
 
-    x = l.LocData_RadDist_i_j * cos(theta) * cos(phi);
-    y = l.LocData_RadDist_i_j * sin(theta) * cos(phi);
+    x = l.LocData_RadDist_i_j * sqrt(cos_phi * cos_phi - sin_theta * sin_theta);
+    y = l.LocData_RadDist_i_j * sin_theta;
     z = l.LocData_RadDist_i_j * sin(phi);
     radial_distance = l.LocData_RadDist_i_j;
     radial_velocity = l.LocData_RadRelVel_i_j;
