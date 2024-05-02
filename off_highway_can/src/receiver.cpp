@@ -80,7 +80,7 @@ void Receiver::callback_watchdog()
   }
 }
 
-void Receiver::callback_can(const can_msgs::msg::Frame::SharedPtr frame)
+void Receiver::callback_can(const can_msgs::msg::Frame::ConstSharedPtr & frame)
 {
 #if (RCLCPP_LOG_MIN_SEVERITY <= RCLCPP_LOG_MIN_SEVERITY_DEBUG)
   using std::chrono::steady_clock;

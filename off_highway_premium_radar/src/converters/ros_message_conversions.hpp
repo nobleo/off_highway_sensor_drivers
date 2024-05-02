@@ -305,7 +305,7 @@ auto to_msg(const SensorDTCInformation & d, const rclcpp::Time stamp, const std:
 
 // From ROS message
 inline
-auto from_msg(const msg::EgoVehicleInput::SharedPtr msg)
+auto from_msg(const msg::EgoVehicleInput::ConstSharedPtr & msg)
 {
   const auto & x_velocity_variance = msg->vehicle_data.velocity.covariance[0];
   if (x_velocity_variance < 0.0) {

@@ -31,7 +31,7 @@ Sender::Sender(const rclcpp::NodeOptions & options)
   );
 }
 
-void Sender::callback_input(const RadarInput::SharedPtr msg)
+void Sender::callback_input(const RadarInput::ConstSharedPtr & msg)
 {
   if (std::abs((now() - msg->header.stamp).seconds()) < allowed_age_) {
     auto & v = messages_[ego_velocity_id_].signals["v"];

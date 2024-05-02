@@ -189,7 +189,7 @@ void DefaultConverter::on_sensor_dtc_information(const SensorDTCInformation & da
 
 
 void DefaultConverter::on_ego_vehicle_data(
-  const off_highway_premium_radar_msgs::msg::EgoVehicleInput::SharedPtr msg)
+  const off_highway_premium_radar_msgs::msg::EgoVehicleInput::ConstSharedPtr & msg)
 {
   // TODO(rcp1-beg) Check the x velocity range [-100, 100]?
   EgoVehicleInput d;

@@ -83,7 +83,7 @@ public:
    *
    * \param frame ROS CAN frame
    */
-  void callback_can(const can_msgs::msg::Frame::SharedPtr frame);
+  void callback_can(const can_msgs::msg::Frame::ConstSharedPtr & frame);
 
   /**
    * \brief Returns message definitions of configured CAN messages

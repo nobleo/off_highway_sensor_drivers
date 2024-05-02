@@ -50,7 +50,7 @@ protected:
    *
    * \param msg Received message data
    */
-  void callback_input(const RadarInput::SharedPtr msg);
+  void callback_input(const RadarInput::ConstSharedPtr & msg);
 
   /**
    * \brief Fill message definitions to encode frames of CAN node. Only stored definitions are sent.

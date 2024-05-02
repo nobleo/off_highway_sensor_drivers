@@ -142,7 +142,7 @@ private:
    * \brief Subscription callback on ego vehicle data
    */
   void on_ego_vehicle_data(
-    const off_highway_premium_radar_msgs::msg::EgoVehicleInput::SharedPtr msg);
+    const off_highway_premium_radar_msgs::msg::EgoVehicleInput::ConstSharedPtr & msg);
 
   /**
    * \brief Send measurement cycle sync (triggered by timer)
