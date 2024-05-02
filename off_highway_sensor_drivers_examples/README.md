@@ -43,3 +43,13 @@ ros2 launch off_highway_sensor_drivers_examples off_highway_premium_radar_filter
       not provided, default parameters from the off_highway_premium_radar package are loaded.
     * **rviz_config**: Path to rviz configuration file. If not provided, default configuration is
       loaded from this package.
+
+* **[off_highway_radar_extract_velocity_launch.py](launch/off_highway_radar_extract_velocity_launch.py)**:
+  Starts the extract_velocity component and the sender component of the off_highway_radar in
+  a composition to make use of intra-process communication. The extract_velocity component extracts
+  the velocity information from a `nav_msgs::msg::Odometry` message and republishes it as a
+  `geometry_msgs::msg::TwistStamped` message.
+  * Arguments:
+    * **params**: Path to ROS YAML parameter file to load for sender component of
+      off_highway_radar. If not provided, default parameters from the off_highway_radar package are
+      loaded.
