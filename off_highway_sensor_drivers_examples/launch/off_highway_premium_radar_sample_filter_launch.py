@@ -37,20 +37,19 @@ def generate_launch_description():
         DeclareLaunchArgument('rviz_config',
                               default_value=rviz_config,
                               description='rviz configuration file'),
-        Node(
-            package='off_highway_premium_radar_sample',
-            executable='driver',
-            name='off_highway_premium_radar_sample_driver',
-            output='screen',
-            emulate_tty=True,
-            parameters=[LaunchConfiguration('off_highway_premium_radar_sample_params')]
-        ),
         ComposableNodeContainer(
-            name='filter_container',
+            name='filtered_off_highway_premium_radar_sample_container',
             namespace='',
             package='rclcpp_components',
             executable='component_container',
             composable_node_descriptions=[
+                ComposableNode(
+                    package='off_highway_premium_radar_sample',
+                    plugin='off_highway_premium_radar_sample::NodeWithDefaultConverter',
+                    name='off_highway_premium_radar_sample_driver',
+                    parameters=[LaunchConfiguration('off_highway_premium_radar_sample_params')],
+                    extra_arguments=[{'use_intra_process_comms': True}],
+                ),
                 ComposableNode(
                     package='pcl_ros',
                     plugin='pcl_ros::PassThrough',
@@ -66,6 +65,7 @@ def generate_launch_description():
                         {'input_frame': 'base_link'},
                         {'output_frame': 'base_link'},
                     ],
+                    extra_arguments=[{'use_intra_process_comms': True}]
                 ),
                 ComposableNode(
                     package='pcl_ros',
@@ -80,6 +80,7 @@ def generate_launch_description():
                         {'filter_limit_min': 0.0},
                         {'filter_limit_max': 30.0},
                     ],
+                    extra_arguments=[{'use_intra_process_comms': True}]
                 ),
                 ComposableNode(
                     package='pcl_ros',
@@ -94,6 +95,7 @@ def generate_launch_description():
                         {'filter_limit_min': -8.0},
                         {'filter_limit_max': 30.0},
                     ],
+                    extra_arguments=[{'use_intra_process_comms': True}]
                 ),
             ],
             output='screen',
