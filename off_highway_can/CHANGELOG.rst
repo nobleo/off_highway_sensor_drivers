@@ -2,6 +2,12 @@
 Changelog for package off_highway_can
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Switch from deprecated signature to const shared_ptr reference while still supporting efficient intra-process communication
+  See https://github.com/ros2/rclcpp/pull/1598.
+* Contributors: Sarah Huber
+
 0.5.1 (2024-03-27)
 ------------------
 * Align Clang FP contraction to GCC for passing tests

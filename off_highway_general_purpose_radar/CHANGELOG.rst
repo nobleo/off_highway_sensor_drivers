@@ -2,6 +2,12 @@
 Changelog for package off_highway_general_purpose_radar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Convert general purpose radar from node to component
+* Add launch argument for parameters and unify launch file names
+* Contributors: Robin Petereit
+
 0.5.1 (2024-03-27)
 ------------------
 * Include what you use

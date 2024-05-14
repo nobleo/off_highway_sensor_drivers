@@ -2,6 +2,9 @@
 Changelog for package off_highway_uss_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.5.1 (2024-03-27)
 ------------------
 * Disable irrelevant warnings for Clang
