@@ -2,8 +2,8 @@
 Changelog for package off_highway_can
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.0 (2024-05-14)
+------------------
 * Switch from deprecated signature to const shared_ptr reference while still supporting efficient intra-process communication
   See https://github.com/ros2/rclcpp/pull/1598.
 * Contributors: Sarah Huber
