@@ -10,7 +10,7 @@ metapackage for all of the following packages.
 ## Ethernet Based Drivers
 
 - [**off_highway_premium_radar_sample**](off_highway_premium_radar_sample/README.md): Driver library
-  and node for the Bosch Radar Off-Highway Premium Sample Sample
+  and node for the Bosch Radar Off-Highway Premium Sample
 - [**off_highway_premium_radar_sample_msgs**](off_highway_premium_radar_sample_msgs/README.md): The
   custom message interface for the off_highway_premium_radar_sample package
 
