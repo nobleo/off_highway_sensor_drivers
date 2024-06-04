@@ -2,6 +2,9 @@
 Changelog for package off_highway_sensor_drivers_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.0 (2024-05-14)
 ------------------
 * Restructure README of examples package
