@@ -2,6 +2,9 @@
 Changelog for package off_highway_can
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.1 (2024-06-04)
 ------------------
 * Fix missing dependency that was find_packaged (#7)

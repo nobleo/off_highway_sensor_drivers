@@ -2,6 +2,11 @@
 Changelog for package off_highway_premium_radar_sample
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix azimuth and elevation angle variances of premium radar (#8)
+* Contributors: Maximilian Hilger
+
 0.6.1 (2024-06-04)
 ------------------
 
