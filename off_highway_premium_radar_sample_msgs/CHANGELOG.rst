@@ -2,6 +2,9 @@
 Changelog for package off_highway_premium_radar_sample_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.2 (2024-06-13)
 ------------------
 

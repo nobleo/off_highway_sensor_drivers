@@ -2,6 +2,9 @@
 Changelog for package off_highway_sensor_drivers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.2 (2024-06-13)
 ------------------
 
