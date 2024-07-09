@@ -2,8 +2,8 @@
 Changelog for package off_highway_uss
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.3 (2024-07-09)
+------------------
 * Add missing dependency on PCL headers (#9)
   When I try to build this package on jazzy with rosdep, the PCL headers
   are missing. This package uses `find_package(PCL)` and includes it in
