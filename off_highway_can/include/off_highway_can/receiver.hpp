@@ -39,9 +39,7 @@ namespace off_highway_can
 class Receiver : public rclcpp::Node
 {
 public:
-  using FrameId = can_msgs::msg::Frame::_id_type;
-  using FrameData = can_msgs::msg::Frame::_data_type;
-
+  using FrameId = uint32_t;
   using Messages = std::unordered_map<FrameId, Message>;
 
   using DiagTask =
