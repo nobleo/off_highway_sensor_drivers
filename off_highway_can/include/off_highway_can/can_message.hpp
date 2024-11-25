@@ -95,6 +95,7 @@ struct Message
   /**
    * \brief Decode frame bits into signals.
    * \param frame Frame byte array
+   * \return False if decoding is invalid (CRC, message counter, length), true otherwise
    */
   template<typename FrameData>
   bool decode(const FrameData & frame);
@@ -102,6 +103,8 @@ struct Message
   /**
    * \brief Check frame by comparing length, CRC and message counter difference.
    * \param frame Frame byte array
+   * \return False if array length not equal to message length, wrong CRC or message counter, true
+   * otherwise
    */
   template<typename FrameData>
   bool valid(const FrameData & frame);

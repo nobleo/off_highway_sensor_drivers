@@ -106,6 +106,10 @@ bool Message::decode(const FrameData & frame)
 template<typename FrameData>
 bool Message::valid(const FrameData & frame)
 {
+  if (frame.size() != this->length) {
+    return false;
+  }
+
   if (crc_index && frame[*crc_index] != calculate_crc(frame)) {
     if (message_counter) {
       message_counter->first = true;
