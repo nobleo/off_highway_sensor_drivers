@@ -27,14 +27,15 @@
 #include "diagnostic_updater/diagnostic_updater.hpp"
 
 #include "can_msgs/msg/frame.hpp"
+#include "ros2_socketcan_msgs/msg/fd_frame.hpp"
 
 #include "off_highway_can/can_message.hpp"
 
 namespace off_highway_can
 {
 /**
- * \brief Abstract receiver class to decode CAN node frames. Needs to be extended for specific CAN
- * node.
+ * \brief Abstract receiver class to decode CAN (FD) node frames. Needs to be extended for specific
+ * CAN node.
  */
 class Receiver : public rclcpp::Node
 {
@@ -48,10 +49,15 @@ public:
 
   /**
    * \brief Construct a new Receiver object.
+   *
+   * \param node_name Name of the node
+   * \param options Node options
+   * \param use_fd Enable CAN FD frames
    */
   explicit Receiver(
     const std::string & node_name = "receiver",
-    const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
+    const rclcpp::NodeOptions & options = rclcpp::NodeOptions(),
+    bool use_fd = false);
 
   /**
    * \brief Destroy the Receiver object.
@@ -80,8 +86,10 @@ public:
    * for valid CRC and message counter. If valid, processes message.
    *
    * \param frame ROS CAN frame
+   * \tparam Msg Type of ROS message to send
    */
-  void callback_can(const can_msgs::msg::Frame::ConstSharedPtr & frame);
+  template<typename Msg>
+  void callback_can(const typename Msg::ConstSharedPtr & frame);
 
   /**
    * \brief Returns message definitions of configured CAN messages
@@ -129,6 +137,8 @@ protected:
   /// Node TF frame id, needed in derived implementations for publishing with correct frame in
   /// header
   std::string node_frame_id_;
+  /// Use CAN FD frames, defaults to false
+  const bool use_fd_{false};
   /// Use J1939 protocol, defaults to false if J1939 protocol handling is not implemented for sensor
   bool use_j1939_{false};
 
@@ -156,7 +166,7 @@ private:
   std::shared_ptr<DiagCompositeTask> diag_composite_;
   std::shared_ptr<diagnostic_updater::Updater> diag_updater_;
 
-  rclcpp::Subscription<can_msgs::msg::Frame>::SharedPtr can_sub_;
+  rclcpp::SubscriptionBase::SharedPtr can_sub_;
 
   rclcpp::TimerBase::SharedPtr watchdog_timer_;
   rclcpp::Time last_message_received_;
@@ -169,4 +179,7 @@ private:
   double timeout_;
   double watchdog_frequency_;
 };
+
 }  // namespace off_highway_can
+
+#include "off_highway_can/impl/receiver_impl.hpp"

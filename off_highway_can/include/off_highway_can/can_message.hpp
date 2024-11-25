@@ -99,11 +99,19 @@ struct Message
   bool decode(const FrameData & frame);
 
   /**
-   * \brief Check frame by comparing CRC and message counter difference.
+   * \brief Check frame by comparing length, CRC and message counter difference.
    * \param frame Frame byte array
    */
   template<typename FrameData>
   bool valid(const FrameData & frame);
+
+  /**
+   * \brief Compute CRC.
+   * \param frame Frame byte array
+   * \return CRC value
+   */
+  template<typename FrameData>
+  uint8_t calculate_crc(const FrameData & frame);
 };
 
 }  // namespace off_highway_can
