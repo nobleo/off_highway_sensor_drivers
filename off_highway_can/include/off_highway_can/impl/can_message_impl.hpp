@@ -79,9 +79,13 @@ void Message::encode(FrameData & frame)
 template<typename FrameData>
 void Message::validate(FrameData & frame)
 {
-  message_counter.increase();
-  message_counter.encode(frame);
-  frame[crc_index] = calculate_crc(frame);
+  if (message_counter) {
+    message_counter->increase();
+    message_counter->encode(frame);
+  }
+  if (crc_index) {
+    frame[*crc_index] = calculate_crc(frame);
+  }
 }
 
 
@@ -102,18 +106,20 @@ bool Message::decode(const FrameData & frame)
 template<typename FrameData>
 bool Message::valid(const FrameData & frame)
 {
-  if (frame[crc_index] != calculate_crc(frame)) {
-    message_counter.first = true;
+  if (crc_index && frame[*crc_index] != calculate_crc(frame)) {
+    if (message_counter) {
+      message_counter->first = true;
+    }
     return false;
   }
 
-  return message_counter.decode_and_check(frame);
+  return !message_counter || message_counter->decode_and_check(frame);
 }
 
 template<typename FrameData>
 uint8_t Message::calculate_crc(const FrameData & frame)
 {
-  return calculateCRC(frame.data(), crc_index, frame.size());
+  return calculateCRC(frame.data(), *crc_index, frame.size());
 }
 
 template<>

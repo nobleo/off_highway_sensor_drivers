@@ -16,6 +16,7 @@
 #pragma once
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <unordered_map>
 
@@ -73,8 +74,8 @@ struct Message
 {
   std::string name;
   uint8_t length{8};
-  uint8_t crc_index{7};
-  MessageCounter message_counter;
+  std::optional<uint8_t> crc_index{7};
+  std::optional<MessageCounter> message_counter{std::nullopt};
   std::unordered_map<std::string, Signal> signals;
 
   /**
