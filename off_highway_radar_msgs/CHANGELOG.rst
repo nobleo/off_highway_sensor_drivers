@@ -2,8 +2,8 @@
 Changelog for package off_highway_radar_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.0 (2024-12-04)
+------------------
 * Do not force warnings as errors to fix rolling (#11)
 * Contributors: Tim Clephas
 

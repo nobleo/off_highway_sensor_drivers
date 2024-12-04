@@ -2,8 +2,8 @@
 Changelog for package off_highway_general_purpose_radar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.0 (2024-12-04)
+------------------
 * Register GPR component
 * Contributors: Robin Petereit
 
