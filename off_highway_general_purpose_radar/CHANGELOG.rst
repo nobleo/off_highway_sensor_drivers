@@ -2,6 +2,11 @@
 Changelog for package off_highway_general_purpose_radar
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Register GPR component
+* Contributors: Robin Petereit
+
 0.6.3 (2024-07-09)
 ------------------
 * Add missing dependency on PCL headers (#9)
